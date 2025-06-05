@@ -1,6 +1,6 @@
 ---
 
-name: "Validate PR Title"
+name: "PR Title Check"
 
 on:
   pull_request:
@@ -12,10 +12,11 @@ jobs:
     env:
       PR_TITLE: ${{ github.event.pull_request.title }}
     steps:
-      - name: Check PR title follows Conventional commits
+      - name: PR Title Check ✅  # 👈 this is what shows in branch protection
         run: |
           echo "PR Title: $PR_TITLE"
-          if [[ ! "$PR_TITLE" =~ ^(feat|fix|chore|docs|style|refactor|test|perf)(\(.+\))?:\ .+ ]]; then
+          #shopt -s nocasematch  # ✅ Allow case-insensitive matching
+          if [[ ! "$PR_TITLE" =~ ^([Ff]eat|[Ff]ix|[Cc]hore|[Dd]ocs|[S]style|[Rr]efactor|[Tt]est|[Pp]erf)(\(.+\))?:\ .+ ]]; then
             echo "::error::❌ PR title must follow Conventional Commit format, e.g., 'feat(ui): add login button'"
             echo ""
             echo "🔧 Allowed types and their meanings:"
