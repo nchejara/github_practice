@@ -1,0 +1,29 @@
+---
+
+name: "Validate PR Title"
+
+on:
+  pull_request:
+    types: [opened, edited, reopened]
+
+jobs:
+  pr_title_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title follows Conventional commits
+        run: |
+          echo "PR Title: ${{ github.event.pull_request.title }}"
+          if [[ ! "${{ github.event.pull_request.title }}" =~ ^(feat|fix|chore|docs|style|refactor|test|perf)(\(.+\))?:\ .+ ]]; then
+            echo "::error::❌ PR title must follow Conventional Commit format, e.g., 'feat(ui): add login button'"
+            echo ""
+            echo "🔧 Allowed types and their meanings:"
+            echo "  - feat:     A new feature"
+            echo "  - fix:      A bug fix"
+            echo "  - chore:    Routine tasks like build process or config"
+            echo "  - docs:     Documentation only changes"
+            echo "  - style:    Code style changes (formatting, lint, etc.)"
+            echo "  - refactor: Code changes without fixing bugs or adding features"
+            echo "  - test:     Adding or updating tests"
+            echo "  - perf:     Performance improvements"
+            exit 1
+          fi
