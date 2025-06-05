@@ -1,6 +1,6 @@
 ---
 
-name: "PR Title Check Workflow"
+name: "PR Title Check"
 
 on:
   pull_request:
