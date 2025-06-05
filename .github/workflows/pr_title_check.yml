@@ -8,14 +8,15 @@ on:
 
 jobs:
   pr_title_check:
+    name: PR Title Check ✅   # 👈 This is critical
     runs-on: ubuntu-latest
     env:
       PR_TITLE: ${{ github.event.pull_request.title }}
     steps:
-      - name: PR Title Check ✅  # 👈 this is what shows in branch protection
+      - name: Validate PR Title
         run: |
           echo "PR Title: $PR_TITLE"
-          #shopt -s nocasematch  # ✅ Allow case-insensitive matching
+          # shopt -s nocasematch  # ✅ Allow case-insensitive matching
           if [[ ! "$PR_TITLE" =~ ^([Ff]eat|[Ff]ix|[Cc]hore|[Dd]ocs|[S]style|[Rr]efactor|[Tt]est|[Pp]erf)(\(.+\))?:\ .+ ]]; then
             echo "::error::❌ PR title must follow Conventional Commit format, e.g., 'feat(ui): add login button'"
             echo ""
